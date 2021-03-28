@@ -17,8 +17,17 @@ Develop a student management application (Spring Boot App) based on the MVC arch
 ```bash
 bash bash.sh
 ```
+即可在如下网址查看网页。
+http://localhost:8080
 
-即可在浏览器当中输入 `http://localhost:8080`查看网页。
+
+
+
+## 执行网页截图
+![img-alpha](/pic/img-alpha.png)
+
+
+
 
 
 
@@ -27,8 +36,3 @@ bash bash.sh
 https://github.com/sa-spring/spring-petclinic
 
 https://njuics.github.io/sa-2021/ 
-
-
-
-
-
