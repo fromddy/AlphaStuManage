@@ -20,6 +20,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication(proxyBeanMethods = false)
+// @EnableCaching
 public class AlphaStuManageApplication {
 
 	public static void main(String[] args) {

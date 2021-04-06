@@ -26,6 +26,11 @@ import cn.edu.nju.AlphaStuManage.model.Owner;
 
 public interface OwnerRepository extends Repository<Owner, Integer> {
 
+	@Query("SELECT DISTINCT owner FROM Owner owner WHERE owner.name LIKE %:name% AND owner.gender LIKE %:gender% AND owner.address LIKE %:address% AND owner.department LIKE %:department%")
+	@Transactional(readOnly = true)
+	Collection<Owner> findOwner(@Param("name") String sname, @Param("gender") String gender,
+			@Param("address") String address, @Param("department") String department);
+
 	/**
 	 * Retrieve {@link Owner}s from the data store by last name, returning all owners
 	 * whose last name <i>starts</i> with the given name.

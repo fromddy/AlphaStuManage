@@ -1,0 +1,51 @@
+Simulation gatlingtest.GatlingTestSimulation started...
+
+================================================================================
+2021-04-06 17:18:02                                           5s elapsed
+---- Requests ------------------------------------------------------------------
+> Global                                                   (OK=311    KO=0     )
+> search request                                           (OK=200    KO=0     )
+> search request Redirect 1                                (OK=111    KO=0     )
+
+---- Student Manage test -------------------------------------------------------
+[#########################################---------------------------------] 55%
+          waiting: 0      / active: 89     / done: 111   
+================================================================================
+
+
+================================================================================
+2021-04-06 17:18:04                                           7s elapsed
+---- Requests ------------------------------------------------------------------
+> Global                                                   (OK=400    KO=0     )
+> search request                                           (OK=200    KO=0     )
+> search request Redirect 1                                (OK=200    KO=0     )
+
+---- Student Manage test -------------------------------------------------------
+[##########################################################################]100%
+          waiting: 0      / active: 0      / done: 200   
+================================================================================
+
+Simulation gatlingtest.GatlingTestSimulation completed in 7 seconds
+Parsing log file(s)...
+Parsing log file(s) done
+Generating reports...
+
+================================================================================
+---- Global Information --------------------------------------------------------
+> request count                                        400 (OK=400    KO=0     )
+> min response time                                     86 (OK=86     KO=-     )
+> max response time                                   6177 (OK=6177   KO=-     )
+> mean response time                                  2262 (OK=2262   KO=-     )
+> std deviation                                       1463 (OK=1463   KO=-     )
+> response time 50th percentile                       2270 (OK=2270   KO=-     )
+> response time 75th percentile                       3398 (OK=3398   KO=-     )
+> response time 95th percentile                       4694 (OK=4694   KO=-     )
+> response time 99th percentile                       5389 (OK=5389   KO=-     )
+> mean requests/sec                                     50 (OK=50     KO=-     )
+---- Response Time Distribution ------------------------------------------------
+> t < 800 ms                                            87 ( 22%)
+> 800 ms < t < 1200 ms                                  34 (  9%)
+> t > 1200 ms                                          279 ( 70%)
+> failed                                                 0 (  0%)
+================================================================================
+

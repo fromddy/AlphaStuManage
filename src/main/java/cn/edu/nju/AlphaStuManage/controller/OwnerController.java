@@ -32,16 +32,20 @@ import org.springframework.web.servlet.ModelAndView;
 
 import cn.edu.nju.AlphaStuManage.model.Owner;
 import cn.edu.nju.AlphaStuManage.repository.OwnerRepository;
+import cn.edu.nju.AlphaStuManage.service.OwnerService;
 
 @Controller
 class OwnerController {
 
 	private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
 
-	private final OwnerRepository owners;
+	private final OwnerService ownerService;
 
-	public OwnerController(OwnerRepository clinicService) {
-		this.owners = clinicService;
+	// private final OwnerRepository ownerService;
+
+	public OwnerController(OwnerService ownerService) {
+
+		this.ownerService = ownerService;
 	}
 
 	@InitBinder
@@ -62,7 +66,8 @@ class OwnerController {
 			return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 		}
 		else {
-			this.owners.save(owner);
+			this.ownerService.saveOwner(owner);
+
 			return "redirect:/owners/" + owner.getId();
 		}
 	}
@@ -81,8 +86,26 @@ class OwnerController {
 			owner.setName(""); // empty string signifies broadest possible search
 		}
 
+		if (owner.getGender() == null) {
+			owner.setGender("");
+		}
+		if (owner.getAddress() == null) {
+			owner.setAddress("");
+		}
+		if (owner.getDepartment() == null) {
+			owner.setDepartment("");
+		}
+
+		String name = owner.getName();
+		String gender = owner.getGender();
+		String address = owner.getAddress();
+		String department = owner.getDepartment();
+
 		// find owners by name
-		Collection<Owner> results = this.owners.findByName(owner.getName());
+		Collection<Owner> results = this.ownerService.findOwner(name, gender, address, department);
+
+		// ownerService.findOwner(name, gender, address, department);
+
 		if (results.isEmpty()) {
 			// no owners found
 			result.rejectValue("name", "notFound", "not found");
@@ -103,7 +126,7 @@ class OwnerController {
 
 	@GetMapping("/owners/{ownerId}/edit")
 	public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Model model) {
-		Owner owner = this.owners.findById(ownerId);
+		Owner owner = this.ownerService.findById(ownerId);
 		model.addAttribute(owner);
 		return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 	}
@@ -116,7 +139,7 @@ class OwnerController {
 		}
 		else {
 			owner.setId(ownerId);
-			this.owners.save(owner);
+			this.ownerService.saveOwner(owner);
 			return "redirect:/owners/{ownerId}";
 		}
 	}
@@ -124,8 +147,8 @@ class OwnerController {
 	@GetMapping("/owners/{ownerId}/delete")
 	public String initDeleteStudentForm(@PathVariable("ownerId") int ownerId, Model model) {
 
-		Owner owner = this.owners.findById(ownerId);
-		this.owners.delete(owner);
+		Owner owner = this.ownerService.findById(ownerId);
+		this.ownerService.deleteOwner(owner);
 		return "redirect:/owners/";
 
 	}
@@ -139,7 +162,7 @@ class OwnerController {
 	@GetMapping("/owners/{ownerId}")
 	public ModelAndView showOwner(@PathVariable("ownerId") int ownerId) {
 		ModelAndView mav = new ModelAndView("owners/ownerDetails");
-		Owner owner = this.owners.findById(ownerId);
+		Owner owner = this.ownerService.findById(ownerId);
 		mav.addObject(owner);
 		return mav;
 	}

@@ -1,6 +1,7 @@
-/home/ddy/github/AlphaStuManage/src/main/java/cn/edu/nju/AlphaStuManage/model/Owner.java
-/home/ddy/github/AlphaStuManage/src/main/java/cn/edu/nju/AlphaStuManage/repository/OwnerRepository.java
-/home/ddy/github/AlphaStuManage/src/main/java/cn/edu/nju/AlphaStuManage/AlphaStuManageApplication.java
-/home/ddy/github/AlphaStuManage/src/main/java/cn/edu/nju/AlphaStuManage/controller/OwnerController.java
-/home/ddy/github/AlphaStuManage/src/main/java/cn/edu/nju/AlphaStuManage/system/CacheConfiguration.java
-/home/ddy/github/AlphaStuManage/src/main/java/cn/edu/nju/AlphaStuManage/controller/WelcomeController.java
+/home/ddy/AlphaStuManage/src/main/java/cn/edu/nju/AlphaStuManage/repository/OwnerRepository.java
+/home/ddy/AlphaStuManage/src/main/java/cn/edu/nju/AlphaStuManage/model/Owner.java
+/home/ddy/AlphaStuManage/src/main/java/cn/edu/nju/AlphaStuManage/service/OwnerService.java
+/home/ddy/AlphaStuManage/src/main/java/cn/edu/nju/AlphaStuManage/system/CacheConfiguration.java
+/home/ddy/AlphaStuManage/src/main/java/cn/edu/nju/AlphaStuManage/AlphaStuManageApplication.java
+/home/ddy/AlphaStuManage/src/main/java/cn/edu/nju/AlphaStuManage/controller/OwnerController.java
+/home/ddy/AlphaStuManage/src/main/java/cn/edu/nju/AlphaStuManage/controller/WelcomeController.java
