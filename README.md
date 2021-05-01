@@ -17,21 +17,31 @@
 
 ### 查询
 
-以GET的方式访问localhost:8080/students，查询得到所有学生的个人信息，查询成功返回状态码200 OK；
+以GET的方式访问localhost:8080/students查询得到所有学生的个人信息，
+查询成功返回状态码200 OK；
 
-以GET的方式访问localhost:8080/students/{id} , {id} 表示想要查询学生的id数字，如 localhost:8080/students/0, 查询成功的话会以json格式返回对应同学的个人信息，并且返回状态码200 OK，未查询到该学生信息会返回状态码404 Not Found。
+以GET的方式访问localhost:8080/students/{id} , 
+{id} 表示想要查询学生的id数字，如 localhost:8080/students/0, 
+查询成功的话会以json格式返回对应同学的个人信息，并且返回状态码200 OK，
+未查询到该学生信息会返回状态码404 Not Found。
 
 ### 删除
 
-以DELETE的方式访问localhost:8080/students/{id} , 如果数据库中没有该id对应的学生信息，那么返回400 Bad Request；如果数据库中有该id对应的学生信息，那么会删除该名同学的信息，同时返回200 OK。
+以DELETE的方式访问localhost:8080/students/{id} , 
+如果数据库中没有该id对应的学生信息，那么返回400 Bad Request；
+如果数据库中有该id对应的学生信息，那么会删除该名同学的信息，同时返回200 OK。
 
 ### 修改
 
-在Body中填写入修改后的信息，以PUT的方式访问 localhost:8080/students/{id}, 如果修改成功会返回200 OK。
+在Body中填写入修改后的信息，
+以PUT的方式访问 localhost:8080/students/{id}, 
+如果修改成功会返回200 OK。
 
 ### 增加
 
-在Body中填入新学生的信息，然后以POST的方式访问localhost:8080/students, 增加成功后会返回200 OK。
+在Body中填入新学生的信息，
+然后以POST的方式访问localhost:8080/students, 
+增加成功后会返回200 OK。
 
 
 
