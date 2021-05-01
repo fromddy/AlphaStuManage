@@ -26,11 +26,17 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import org.springframework.core.style.ToStringCreator;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /*
  @author :ddy
 */
-
+@Data
 @Entity
+@NoArgsConstructor()
+@AllArgsConstructor
 @Table(name = "owners")
 public class Owner implements Serializable {
 

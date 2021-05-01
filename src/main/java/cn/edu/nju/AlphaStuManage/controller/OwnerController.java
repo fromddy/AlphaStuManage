@@ -15,133 +15,133 @@
  */
 package cn.edu.nju.AlphaStuManage.controller;
 
-import java.util.Collection;
-import java.util.Map;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-import javax.validation.Valid;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.util.Optional;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.hateoas.Link;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import cn.edu.nju.AlphaStuManage.model.Owner;
 import cn.edu.nju.AlphaStuManage.repository.OwnerRepository;
 
-@Controller
+/**
+ * Spring Web {@link RestController} used to generate a REST API.
+ *
+ * @author Greg Turnquist
+ */
+@RestController
 class OwnerController {
 
-	private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
+	private final OwnerRepository repository;
 
-	private final OwnerRepository owners;
-
-	public OwnerController(OwnerRepository clinicService) {
-		this.owners = clinicService;
-	}
-
-	@InitBinder
-	public void setAllowedFields(WebDataBinder dataBinder) {
-		dataBinder.setDisallowedFields("id");
-	}
-
-	@GetMapping("/owners/new")
-	public String initCreationForm(Map<String, Object> model) {
-		Owner owner = new Owner();
-		model.put("owner", owner);
-		return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
-	}
-
-	@PostMapping("/owners/new")
-	public String processCreationForm(@Valid Owner owner, BindingResult result) {
-		if (result.hasErrors()) {
-			return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
-		}
-		else {
-			this.owners.save(owner);
-			return "redirect:/owners/" + owner.getId();
-		}
-	}
-
-	@GetMapping("/owners/find")
-	public String initFindForm(Map<String, Object> model) {
-		model.put("owner", new Owner());
-		return "owners/findOwners";
-	}
-
-	@GetMapping("/owners")
-	public String processFindForm(Owner owner, BindingResult result, Map<String, Object> model) {
-
-		// allow parameterless GET request for /owners to return all records
-		if (owner.getName() == null) {
-			owner.setName(""); // empty string signifies broadest possible search
-		}
-
-		// find owners by name
-		Collection<Owner> results = this.owners.findByName(owner.getName());
-		if (results.isEmpty()) {
-			// no owners found
-			result.rejectValue("name", "notFound", "not found");
-			return "owners/findOwners";
-		}
-
-		else if (results.size() == 1) {
-			// 1 owner found
-			owner = results.iterator().next();
-			return "redirect:/owners/" + owner.getId();
-		}
-		else {
-			// multiple owners found
-			model.put("selections", results);
-			return "owners/ownersList";
-		}
-	}
-
-	@GetMapping("/owners/{ownerId}/edit")
-	public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Model model) {
-		Owner owner = this.owners.findById(ownerId);
-		model.addAttribute(owner);
-		return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
-	}
-
-	@PostMapping("/owners/{ownerId}/edit")
-	public String processUpdateOwnerForm(@Valid Owner owner, BindingResult result,
-			@PathVariable("ownerId") int ownerId) {
-		if (result.hasErrors()) {
-			return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
-		}
-		else {
-			owner.setId(ownerId);
-			this.owners.save(owner);
-			return "redirect:/owners/{ownerId}";
-		}
-	}
-
-	@GetMapping("/owners/{ownerId}/delete")
-	public String initDeleteStudentForm(@PathVariable("ownerId") int ownerId, Model model) {
-
-		Owner owner = this.owners.findById(ownerId);
-		this.owners.delete(owner);
-		return "redirect:/owners/";
-
+	OwnerController(OwnerRepository repository) {
+		this.repository = repository;
 	}
 
 	/**
-	 * Custom handler for displaying an owner.
-	 * @param ownerId the ID of the owner to display
-	 * @return a ModelMap with the model attributes for the view
+	 * Look up all owners, and transform them into a REST collection resource. Then return
+	 * them through Spring Web's {@link ResponseEntity} fluent API.
 	 */
+	@GetMapping("/students")
+	ResponseEntity<CollectionModel<EntityModel<Owner>>> findAll() {
 
-	@GetMapping("/owners/{ownerId}")
-	public ModelAndView showOwner(@PathVariable("ownerId") int ownerId) {
-		ModelAndView mav = new ModelAndView("owners/ownerDetails");
-		Owner owner = this.owners.findById(ownerId);
-		mav.addObject(owner);
-		return mav;
+		List<EntityModel<Owner>> owners = StreamSupport.stream(repository.findAll().spliterator(), false)
+				.map(owner -> EntityModel.of(owner, //
+						linkTo(methodOn(OwnerController.class).findOne(owner.getId())).withSelfRel(), //
+						linkTo(methodOn(OwnerController.class).findAll()).withRel("owners"))) //
+				.collect(Collectors.toList());
+
+		return ResponseEntity.ok( //
+				CollectionModel.of(owners, //
+						linkTo(methodOn(OwnerController.class).findAll()).withSelfRel()));
+	}
+
+	@PostMapping("/students")
+	ResponseEntity<?> newOwner(@RequestBody Owner owner) {
+
+		try {
+			Owner savedOwner = repository.save(owner);
+
+			EntityModel<Owner> ownerResource = EntityModel.of(savedOwner, //
+					linkTo(methodOn(OwnerController.class).findOne(savedOwner.getId())).withSelfRel());
+
+			return ResponseEntity //
+					.created(new URI(ownerResource.getRequiredLink(IanaLinkRelations.SELF).getHref())) //
+					.body(ownerResource);
+		}
+		catch (URISyntaxException e) {
+			return ResponseEntity.badRequest().body("Unable to create " + owner);
+		}
+	}
+
+	/**
+	 * Look up a single {@link Owner} and transform it into a REST resource. Then return
+	 * it through Spring Web's {@link ResponseEntity} fluent API.
+	 * @param id
+	 */
+	@GetMapping("/students/{id}")
+	ResponseEntity<EntityModel<Owner>> findOne(@PathVariable Integer id) {
+
+		return repository.findById(id) //
+				.map(owner -> EntityModel.of(owner, //
+						linkTo(methodOn(OwnerController.class).findOne(owner.getId())).withSelfRel(), //
+						linkTo(methodOn(OwnerController.class).findAll()).withRel("owners"))) //
+				.map(ResponseEntity::ok) //
+				.orElse(ResponseEntity.notFound().build());
+	}
+
+	/**
+	 * Update existing owner then return a Location header.
+	 * @param owner
+	 * @param id
+	 * @return
+	 */
+	@PutMapping("/students/{id}")
+	ResponseEntity<?> updateOwner(@RequestBody Owner owner, @PathVariable Integer id) {
+
+		Owner ownerToUpdate = owner;
+		ownerToUpdate.setId(id);
+		repository.save(ownerToUpdate);
+
+		Link newlyCreatedLink = linkTo(methodOn(OwnerController.class).findOne(id)).withSelfRel();
+
+		try {
+
+			return ResponseEntity.ok().location(new URI(newlyCreatedLink.getHref())).body("update sucessful");
+		}
+		catch (URISyntaxException e) {
+			return ResponseEntity.badRequest().body("Unable to update " + ownerToUpdate);
+		}
+	}
+
+	@DeleteMapping("students/{id}")
+	ResponseEntity<?> deleteStudent(@PathVariable Integer id) {
+		Optional<Owner> res = repository.findById(id);
+		if (!res.isPresent()) {
+			return ResponseEntity.badRequest().body("Not found student with id :" + id);
+
+		}
+		else {
+			repository.deleteById(id);
+			return ResponseEntity.ok().body("delete the student with id:" + id);
+		}
 	}
 
 }
