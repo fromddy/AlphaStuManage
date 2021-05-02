@@ -26,17 +26,11 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import org.springframework.core.style.ToStringCreator;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 /*
  @author :ddy
 */
-@Data
+
 @Entity
-@NoArgsConstructor()
-@AllArgsConstructor
 @Table(name = "owners")
 public class Owner implements Serializable {
 
@@ -131,6 +125,25 @@ public class Owner implements Serializable {
 
 	public String getNumber() {
 		return number;
+	}
+
+	// return new Owner(student.getId(), student.getName(),
+	// RandomDataGenerator.getGender(),RandomDataGenerator.getDate(),student.getAddress(),student.getDepartment(),student.getNumber());
+
+	public Owner() {
+
+	}
+
+	public Owner(Integer id, String name, String gender, String date, String address, String department,
+			String number) {
+		this.id = id;
+		this.name = name;
+		this.gender = gender;
+		this.birthday = date;
+		this.address = address;
+		this.department = department;
+		this.number = number;
+
 	}
 
 	@Override

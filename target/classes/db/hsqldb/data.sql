@@ -1,11 +1,3 @@
-INSERT INTO owners VALUES (0,'fzwez','male','1994-6-21','beijing','computer','4');
-INSERT INTO owners VALUES (1,'jjluv','male','1993-11-6','xian','computer','4');
-INSERT INTO owners VALUES (2,'xmgyj','female','1995-10-2','xianyang','philosophy','4');
-INSERT INTO owners VALUES (3,'foowt','male','1997-11-25','nanjing','administration','4');
-INSERT INTO owners VALUES (4,'mhghs','male','1990-5-21','guangzhou','math','4');
-INSERT INTO owners VALUES (5,'btmlh','female','1992-7-28','nanjing','math','4');
-INSERT INTO owners VALUES (6,'alpch','male','1999-11-9','chengdu','philosophy','4');
-INSERT INTO owners VALUES (7,'usmnu','female','1990-4-2','hefei','philosophy','4');
-INSERT INTO owners VALUES (8,'deygg','male','1996-3-23','nanjing','software','4');
-INSERT INTO owners VALUES (9,'hxhjz','male','1990-11-17','shanghai','philosophy','4');
-INSERT INTO owners VALUES (10,'jdizm','male','1995-5-20','shanghai','administration','4');
+
+INSERT INTO owners VALUES (1, 'alpha', 'male', '1997-11-12', 'Beijing', 'Computer','123456');
+INSERT INTO owners VALUES (2, 'beta', 'male', '1997-12-12', 'Nanjing', 'Computer','234233');

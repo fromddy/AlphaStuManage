@@ -1,1 +1,6 @@
 cn/edu/nju/AlphaStuManage/AlphaStuManageApplication.class
+cn/edu/nju/AlphaStuManage/controller/WelcomeController.class
+cn/edu/nju/AlphaStuManage/repository/OwnerRepository.class
+cn/edu/nju/AlphaStuManage/model/Owner.class
+cn/edu/nju/AlphaStuManage/system/CacheConfiguration.class
+cn/edu/nju/AlphaStuManage/controller/OwnerController.class
